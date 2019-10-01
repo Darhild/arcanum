@@ -1,22 +1,164 @@
-.App {
-  text-align: center;
+@import "./mixins.css";
+
+html {
+  --color-bg-base: #fff;
+  --color-bg-dark: #4F4F4F;
+  --color-primary: #FF4F49;
+  --color-accent: #1774E9;
+  --color-accent-secondary: #005FBA;
+  --color-info: #F1F8FF;
+  --color-inactive: #7F8285;
+  --color-faded: #B8BEC3;
+  --color-table-head: #F5F5F5;
+  --color-btn: #E6E6E6;
+  --color-bg-added: #E6FFED;
+  --color-bg-deleted: #FFEEF0;
+  --color-bg-hot: #9A77FF; 
+
+  --color-text-primary: #000000;
+  --color-text-secondary: #00234B;  
+  --color-text-lighter: #434445;
+  --color-text-light: #E0E0E0;
+  --color-text-faded: #999;
+  --color-text-comment: #8694A2;    
+  --color-text-added: #19BC4D;
+  --color-text-deleted: #FF3029;
+  --color-text-author: #008F00;
+  --color-text-type: #B4261A;
+  --color-text-message: #6B69C7;
+
+  --color-main-border: #979797;
+  --color-light-border: #F2F2F2;
+  --color-table-border: #E5E5E5;
+
+  --font-base: arial, serif;
+  --font-mono: 'PT Mono', monospace;
+
+  --text-size-base: 14px;
+  --text-size-xs: 12px;
+  --text-size-s: 13px;
+  --text-size-m: 16px;
+  --text-size-l: 18px;
+  --text-size-xl: 20px;
+  --text-size-xxl: 24px;
+
+  --line-height-base: 20px;
+  --line-height-s: 18px;
+  --line-height-l: 28px;
+
+  --padding-base: 32px;
 }
 
-.App-logo {
-  height: 40vmin;
+body {
+  margin: 0;
+  padding: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+::-webkit-scrollbar {
+  width: 8px;   
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {   
+  background-color:#fff;
+}
+
+::-webkit-scrollbar-thumb {    
+  background-color: var(--color-table-border);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;    
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-bg-dark);
+}
+
+.Main {  
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-width: $mobile-width;
+  min-height: 100vh;
+  padding: 0;
+  font-family: var(--font-base);
+  font-size: var(--text-size-base);
+  line-height: var(--line-height-base);
+  box-sizing: border-box;
+
+  &-Title {
+      width: 100%;
+      padding-right: 16px;
+      padding-left: 16px;
+      box-sizing: border-box;
+      
+      @mixin container;
+  }
+
+  &-Inner-content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      width: 100%;
+      padding-right: 16px;
+      padding-left: 16px;
+      box-sizing: border-box;
+
+      @mixin container;
+  }
+
+  &-Inner-content_p_t {
+      padding-top: 16px;
+  }
+
+  &-Inner-content_width_full {
+      padding-left: 0;
+      padding-right: 0;
+  } 
+  
+  &-Inner-content_sticky {
+      position: sticky;
+      bottom: 0;
+      max-height: 50vh;
+      background-color:var(--color-bg-base);
+      z-index: 150;        
+  }  
 }
 
-.App-link {
-  color: #09d3ac;
+.Overlay {        
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 300;
+}
+
+@media screen and (min-width: $desktop-width) {
+  .Main {
+      &-Title {
+          padding-right: 32px;
+          padding-left: 32px;
+      }
+
+      &-Inner-content {
+          padding-right: 32px;
+          padding-left: 32px;
+      }
+
+      &-Inner-content_width_full {
+          padding-right: 32px;
+          padding-left: 32px;
+      }
+
+      &-Inner-content_sticky {
+          max-height: initial;
+      }
+  }
+
+  .Overlay {
+    display: none;
+  }  
 }

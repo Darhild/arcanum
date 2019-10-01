@@ -1,5 +1,11 @@
 .Icon {
   margin-right: 8px; 
+
+  &_logo {
+        width: 118px;
+        height: 20px;
+        margin-right: 40px; 
+    }
   
   &_folder {
       width: 12px;

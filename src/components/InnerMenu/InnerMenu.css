@@ -1,0 +1,106 @@
+.InnerMenu {
+  position: fixed;    
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;        
+  background-color: var(--color-bg-base);   
+  border-radius: 10px 10px 0 0;
+  box-sizing: border-box;    
+
+  &-Head {
+      position: relative;
+      margin-top: 24px;
+      background-color: var(--color-bg-dark);
+  }
+
+  &-Head {
+      .Inner-menu-Name {
+          color: var(--color-light-border);
+      }
+
+      .Inner-menu-Updated {
+          color: var(--color-text-light);
+      }        
+  }
+
+  &-Head:after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 12px;
+      display: block;
+      width: calc(100% - 24px);
+      height: 4px;
+      background-color: var(--color-bg-base);
+      border-bottom: 1px solid var(--color-table-border);
+  }
+
+  &-Content {
+      max-height: 40vh;
+      background-color: var(--color-bg-base); 
+      overflow: auto;
+  }
+
+  &-Item {
+      padding: 10px 16px 6px;
+      padding-right: 16px;
+      padding-left: 16px; 
+      cursor: pointer;        
+  }
+
+  &-Item:hover {
+      color: var(--color-primary);
+  }
+
+  &-Name {
+      font-weight: bold;
+  } 
+
+  &-Updated {
+      font-size: var(--text-size-s);
+      color: var(--color-inactive);
+  }
+
+  &:before {
+      content: "";
+      position: absolute;
+      display: block;
+      top: 8px;
+      left: 50%;
+      width: 42px;
+      height: 4px;
+      background: var(--color-table-border);
+      transform: translateX(-50%);
+  }  
+}
+
+@media screen and (min-width: $desktop-width) {
+  .InnerMenu {
+      position: absolute;      
+      width: auto;                
+      border-radius: 0;    
+      z-index: 150; 
+
+      &-Wrapper {
+          position: relative;
+          box-shadow: 0px 4px 16px rgba(53, 73, 93, 0.2);         
+      }  
+      
+      &-Head {
+          margin-top: 4px;
+      }
+
+      &-Content {
+          max-height: 296px;            
+      }
+
+      &:before {
+          display: none;
+      }
+  
+      &-Item {
+          padding: 10px 22px 6px;
+      }
+  }
+}

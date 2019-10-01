@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import Header from './components/Header';
-import Title from './components/Title';
+import Breadcrumbs from './components/Breadcrumbs';
+import MainTitle from './components/MainTitle';
 import ContentMenu from './components/ContentMenu';
 import Content from './components/Content';
 import Footer from './components/Footer';
@@ -10,11 +11,11 @@ function App() {
   return (
     <main className="Main">
       <Header/>
-      <Title/>
+      <Breadcrumbs/>
+      <MainTitle/>
       <ContentMenu/>
       <Content/>
-      <Footer/>
-      
+      <Footer/>      
     </main>
   );
 }

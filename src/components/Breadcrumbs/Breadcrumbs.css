@@ -1,0 +1,51 @@
+@import "./../../mixins.css";
+
+.Breadcrumbs {
+    width: 100%;
+    padding-right: 16px;
+    padding-left: 16px;          
+    font-family: arial, serif;
+    font-size: var(--text-size-base);
+    line-height: var(--line-height-base);
+    color: var(--color-inactive);
+    
+    box-sizing: border-box;
+
+    @mixin container;
+
+    &-Wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 12px 0 10px;
+        border-bottom: 1px solid var(--color-light-border);
+        @mixin container;
+    }    
+
+    &-Parent {
+        position: relative;
+        margin-right: 40px;
+        cursor: pointer;
+
+        &:after {            
+            content: "/";
+            position: absolute;
+            right: -20px;
+        }
+
+        &:hover {
+            color: var(--color-primary);
+        }
+    }
+
+    &-Current {
+        font-weight: bold;
+        color: var(--color-text-primary);
+    }
+}
+
+@media screen and (min-width: $desktop-width) {
+    .Breadcrumbs {
+        padding-right: 32px;
+        padding-left: 32px; 
+    }
+}

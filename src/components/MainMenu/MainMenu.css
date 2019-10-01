@@ -1,0 +1,38 @@
+@import "./../../mixins.css";
+
+.MainMenu {
+    position: relative;
+    box-sizing: border-box;
+
+    &-Item {
+        font-weight: bold;
+        cursor: pointer;
+
+        @mixin menuItemAfter;
+        @mixin menuItemBorder 100%, 3px, 0, -21px;
+        
+    } 
+
+    &-Item:hover {
+        color: var(--color-primary);
+    }
+
+    &-InnerMenu {
+        padding-top: 36px;
+        padding-bottom: 20px;
+    }
+    
+}
+
+@media screen and (min-width: $desktop-width) {
+    .MainMenu {
+        &-InnerMenu {
+            top: 41px; 
+            bottom: initial;  
+            min-width: 266px;
+            padding-top: 0; 
+            padding-bottom: 12px;    
+        }
+    }
+
+}
