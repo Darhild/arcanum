@@ -96,7 +96,7 @@ body {
       @mixin container;
   }
 
-  &-Inner-content {
+  &-InnerContent {
       display: flex;
       flex-direction: column;
       flex-grow: 1;
@@ -108,16 +108,16 @@ body {
       @mixin container;
   }
 
-  &-Inner-content_p_t {
+  &-InnerContent_p_t {
       padding-top: 16px;
   }
 
-  &-Inner-content_width_full {
+  &-InnerContent_width_full {
       padding-left: 0;
       padding-right: 0;
   } 
   
-  &-Inner-content_sticky {
+  &-InnerContent_sticky {
       position: sticky;
       bottom: 0;
       max-height: 50vh;
@@ -143,17 +143,17 @@ body {
           padding-left: 32px;
       }
 
-      &-Inner-content {
+      &-InnerContent {
           padding-right: 32px;
           padding-left: 32px;
       }
 
-      &-Inner-content_width_full {
+      &-InnerContent_width_full {
           padding-right: 32px;
           padding-left: 32px;
       }
 
-      &-Inner-content_sticky {
+      &-InnerContent_sticky {
           max-height: initial;
       }
   }

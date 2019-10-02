@@ -1,0 +1,28 @@
+@import "./../../mixins.css";
+
+.MainFooter {
+    display: none;
+}
+
+@media screen and (min-width: $desktop-width) {
+    .MainFooter {
+        display: flex;
+        width: 100%;
+        padding: 18px 20px 14px; 
+        font-size: var(--text-size-s);
+        line-height: var(--line-height-s);
+        color: var(--color-inactive);
+
+        @mixin container;
+
+
+        &-Info {
+            display: flex;
+            margin-left: auto;
+        }
+
+        &-Version {
+            margin-right: 32px;
+        }
+    }
+}

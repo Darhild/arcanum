@@ -1,0 +1,53 @@
+@import "./../../mixins.Css";
+
+.ContentMenu {
+    position: sticky;
+    top: 61px;        
+    width: 100%;  
+    font-size: var(--text-size-m);
+    background-color: #fff;    
+    z-index: 100;
+    box-sizing: border-box;
+
+    @mixin container;
+
+    &-Wrapper {
+        display: flex;
+        margin-right: 16px;
+        margin-left: 16px;
+        padding-top: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--color-main-border);
+    }
+
+    &-Item {
+        margin-right: 32px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: var(--color-inactive);
+        cursor: pointer;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:hover {
+            color: var(--color-primary);
+        }
+
+        &_state_active {
+            color: var(--color-text-primary);            
+            @mixin menuItemBorder 100%, 3px, 0, -9px;
+        }
+    }
+}
+
+@media(min-width: $desktop-width) {
+    .ContentMenu {
+        &-Wrapper {
+            margin-right: 32px;
+            margin-left: 32px;
+        }
+    }
+}
+
