@@ -6,8 +6,8 @@ import icons from './../../assets/icons-sprite.svg';
 const cnIcon = cn('Icon');
 
 const Icon = (props) => (
-  <svg className={cnIcon({ [props.name]: true }, [...props.classes])}>
-    <use xlinkHref={`${icons}#${props.name}`} />
+  <svg className={cnIcon({ [props.type]: true }, [...props.classes])}>
+    <use xlinkHref={`${icons}#${props.type}`} />
   </svg>
 );
 

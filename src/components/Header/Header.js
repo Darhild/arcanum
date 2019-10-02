@@ -9,7 +9,7 @@ export default class Header extends Component {
     return (
       <div class="MainHeader">
         <div class="MainHeader-Wrapper">
-          <Icon name="logo" classes={['MainHeader-Logo']} />
+          <Icon type="logo" classes={['MainHeader-Logo']} />
           <MainMenu />
           <Search classes={['MainHeader-Search']} />
         </div>

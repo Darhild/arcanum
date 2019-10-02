@@ -44,10 +44,6 @@ export default class FilesContent extends Component {
     };
   }
 
-  renderContent() {
-    return this.state.files.map(file => <ContentTableRow file={file} />
-  }
-
   render() { 
     return (
       <div class="ContentTable">
@@ -58,7 +54,10 @@ export default class FilesContent extends Component {
           <div class="ContentTable-Col">Committer</div>
           <div class="ContentTable-Col ContentTable-Col_last">Updates</div>
         </div>
-        {  this.renderContent() };
+        { this.state.files 
+          ? this.state.files.map(file => <ContentTableRow file={file} />) 
+          : null 
+        }
       </div>
     )
   }

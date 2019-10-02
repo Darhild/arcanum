@@ -1,13 +1,14 @@
-const initialState = {
+export const initialState = {
   mainMenu: [
     'Arc',
     'My repository',
     'Devtools-team repository'
   ],
-  files: []
+  files: [],
+  isShown: 'FIlesContent'
 }
 
-export default function renderMenus(state, action) {
+export function reducer(state = initialState, action) {
   if (typeof state === 'undefined') {
     return initialState
   }
