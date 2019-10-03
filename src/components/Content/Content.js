@@ -5,13 +5,18 @@ import FileContent from './../FileContent';
 import { throwStatement } from '@babel/types';
 
 export default class Content extends Component {
-  render() {
+  showContent() {
+    switch (this.props.appContent){         
+      case 'branches':
+        return <BranchesContent/>;
+      default:
+        return <FilesContent/>;
+    }
+  }
+  render() {  
     return (
       <div class="Main-InnerContent">
-        {switch (this.props.content){ 
-          case 'FilesContent': 
-          return <FilesContent/>
-        }}
+        { this.showContent() }
       </div>
     )
   }  

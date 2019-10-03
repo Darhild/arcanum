@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import './ContentMenu.css';
+import ContentMenuItem from './../ContentMenuItem';
 
 export default class ContentMenu extends Component {
   render() {
     return (
       <div class="ContentMenu">
         <div class="ContentMenu-Wrapper">
-          <div class="ContentMenu-Item ContentMenu-Item_state_active">files</div>
-          <div class="ContentMenu-Item">branches</div>
+          <ContentMenuItem data="files" />
+          <ContentMenuItem data="branches" />          
         </div>
       </div>
     )

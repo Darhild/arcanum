@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
-import Content from '../../components/Content';
+import ContentMenuItem from '../../components/ContentMenuItem';
 
 const mapStateToProps = (state) => {
   return {
-    content: state.isShown
+    appContent: state.isShown
   }
 }
 /*
@@ -15,8 +15,8 @@ const mapDispatchToProps = (dispatch) => {
   }
 }*/
 
-const ContentContainer = connect(
+const ConnectedContentMenuItem = connect(
   mapStateToProps
-)(Content)
+)(ContentMenuItem)
 
-export default ContentContainer;
+export default ConnectedContentMenuItem;

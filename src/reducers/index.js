@@ -5,7 +5,7 @@ export const initialState = {
     'Devtools-team repository'
   ],
   files: [],
-  isShown: 'FIlesContent'
+  isShown: 'branches'
 }
 
 export function reducer(state = initialState, action) {
