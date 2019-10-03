@@ -6,14 +6,6 @@ const mapStateToProps = (state) => {
     appContent: state.isShown
   }
 }
-/*
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onTodoClick: (id) => {
-      dispatch(toggleTodo(id))
-    }
-  }
-}*/
 
 const ConnectedContent = connect(
   mapStateToProps

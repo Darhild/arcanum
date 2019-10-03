@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import './ContentMenuItem.css';
+import { showContent } from './../../actions';
 
-class ContentMenuItem extends Component {
-  onClick() {
-    
-  }
-
+class ContentMenuItem extends Component { 
   render() {
+    const { data, appContent, showContent } = this.props;
+
     return (
-      <div onClick={this.onClick} className={ this.props.data === this.props.appContent ? 'ContentMenu-Item ContentMenu-Item_state_active' : 'ContentMenu-Item'}>
-        { this.props.data }
+      <div onClick={() => showContent(data)} className={ data === appContent ? 'ContentMenu-Item ContentMenu-Item_state_active' : 'ContentMenu-Item' }>
+        { data }
       </div>
     )
   }    
@@ -22,32 +21,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(
-  mapStateToProps
-)(ContentMenuItem);
-
-
-
-/*
-export default class ContentMenuItem extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { isActive: false };
-  }
-
-  onClick() {
-    this.setState(state => ({
-      isActive: !state.isActive
-    }))  
-  }
-
-  render() {
-    return (
-      <div onClick={this.onClick} className={ this.state.isActive ? 'ContentMenu-Item ContentMenu-Item_state_active' : 'ContentMenu-Item'}>
-        { this.props.data }
-      </div>
-    )
-  }    
+const mapDispatchToProps = {
+  showContent
 }
-*/
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContentMenuItem);

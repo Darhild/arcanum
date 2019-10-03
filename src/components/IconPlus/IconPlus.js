@@ -10,7 +10,11 @@ export default class IconPlus extends Component {
     return (
       <div className={cnIcon(null, this.props.classes)}>
         <div class="IconPlus-Icon"> 
-          <Icon type={this.props.type} classes={this.props.iconClasses} />
+        {
+          this.props.type
+          ? <Icon type={this.props.type} classes={this.props.iconClasses} />
+          : null
+        }          
         </div>
         <div class="IconPlus-Text FileContent-Name">{this.props.text}</div>
       </div>      

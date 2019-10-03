@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import FilesContent from './../FilesContent';
 import BranchesContent from './../BranchesContent';
 import FileContent from './../FileContent';
-import { throwStatement } from '@babel/types';
+import { fetchData } from './../../actions';
 
-export default class Content extends Component {
+class Content extends Component {
+  componentDidMount() {
+    this.props.fetchData('http://localhost:8000/api/repos/my-repository', 'files');
+  }
+
   showContent() {
-    switch (this.props.appContent){         
+    switch (this.props.appContent){  
+      case 'file':
+        return <FileContent />;       
       case 'branches':
-        return <BranchesContent/>;
+        return <BranchesContent />;
       default:
-        return <FilesContent/>;
+        return <FilesContent files={this.props.files} />;
     }
   }
+  
   render() {  
     return (
       <div class="Main-InnerContent">
@@ -21,3 +29,19 @@ export default class Content extends Component {
     )
   }  
 }
+
+const mapStateToProps = (state) => {
+  return {
+    files: state.files,
+    appContent: state.isShown
+  }
+}
+
+const mapDispatchToProps = {
+  fetchData
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Content);
