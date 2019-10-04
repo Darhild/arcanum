@@ -11,10 +11,18 @@ export const fetchData = (url, dataType) => {
   }  
 }
 
+export const selectRepo = (name) => {
+  return {
+    type: 'SELECT_REPO',
+    name
+  }; 
+}
+
 function itemsFetchDataSuccess(items, dataType) {
   return {
-      type: 'ITEMS_FETCH_DATA_SUCCESS',
-      dataType,
-      items: items
+    type: 'ITEMS_FETCH_DATA_SUCCESS',
+    dataType,
+    items: items
   };
 }
+

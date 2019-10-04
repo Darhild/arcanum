@@ -1,12 +1,27 @@
 import React, { Component} from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import InnerMenu from './../InnerMenu';
 import './MainMenu.css';
+import { selectRepo } from './../../actions';
 
-export default class MainMenu extends Component {
+class MainMenu extends Component {
   constructor(props) {
     super(props);    
-    this.state = { innerMenuIsOpen: false };
-    this.toggleInnerMenu = this.toggleInnerMenu.bind(this);
+    this.state = { 
+      innerMenuIsOpen: false 
+    };
+    this.toggleInnerMenu = this.toggleInnerMenu.bind(this);    
+  }
+
+  selectRepo = (repo) => {
+    this.setState((state) => ({
+      ...state,
+      innerMenuIsOpen: false
+    }))
+
+    this.props.history.push(repo.value);
+    this.props.selectRepo(repo);
   }
 
   toggleInnerMenu() {
@@ -16,10 +31,6 @@ export default class MainMenu extends Component {
   }
 
   render() {
-    if ( this.state.innerMenuIsOpen ) {
-      
-    }   
-
     return (
       <div class="MainMenu MainHeader-Menu"> 
         <div 
@@ -30,13 +41,29 @@ export default class MainMenu extends Component {
           }
           onClick={ this.toggleInnerMenu }
         >
-          Repository Arc
+          { this.props.selectedRepo.text }
         </div>
         { this.state.innerMenuIsOpen 
-          ? <InnerMenu classes={['MainMenu-InnerMenu']} /> 
+          ? <InnerMenu classes={['MainMenu-InnerMenu']} data={this.props.mainMenu} updateData={ this.selectRepo }/> 
           : ''
         }                     
       </div>
     )
   }  
 }
+
+const mapStateToProps = (state) => {
+  return {
+    mainMenu: state.mainMenu,
+    selectedRepo: state.selectedRepo
+  }
+}
+
+const mapDispatchToProps = {
+  selectRepo  
+}
+
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainMenu));

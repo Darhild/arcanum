@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import ContentTableRow from './../ContentTableRow';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { fetchData } from './../../actions';
 import './FilesContent.css';
 
-export default class FilesContent extends Component {
+class FilesContent extends Component {
+  componentDidMount() {
+    if(!this.props.files.length) this.props.fetchData(`http://localhost:8000/api/repos`, 'files');
+  }
+
   render() { 
     return (
       <div class="ContentTable">
@@ -21,3 +28,19 @@ export default class FilesContent extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    files: state.files,
+    appContent: state.isShown
+  }
+}
+
+const mapDispatchToProps = {
+  fetchData
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(FilesContent));

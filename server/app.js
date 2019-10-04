@@ -9,7 +9,7 @@ const readdir = promisify(fs.readdir);
 const checkAccess = promisify(fs.access);
 const dirName = process.argv[2];
 const userOs = os.type();
-let repositoryId; let repositoryPath; let hash; let innerPath; let fileName;
+let repositoryId; let repositoryPath; let hash;
 
 const app = express();
 app.use(express.json());
@@ -23,11 +23,6 @@ app.param('repositoryId', (req, res, next) => {
 
 app.param('commitHash', (req, res, next) => {
   hash = req.params.commitHash;
-  next();
-});
-
-app.param('pathToFile', (req, res, next) => {
-  fileName = req.params.pathToFile;
   next();
 });
 
@@ -46,7 +41,15 @@ app.get('/api/repos', async (req, res) => {
     repos = { error: err.message };
   }
 
-  res.json(repos);
+  let data = [];
+  repos.forEach(repo => {
+    data.push({
+      name: repo,
+      type: 'folder'
+    })     
+  })  
+
+  res.json(data);
 });
 
 app.get('(/api/repos/:repositoryId/commits/:commitHash)(/diff)?', async (req, res) => {
@@ -97,11 +100,15 @@ app.get('(/api/repos/:repositoryId/commits/:commitHash)(/diff)?', async (req, re
   }
 });
 
-app.get('(/api/repos/:repositoryId)(/tree/:commitHash/:path)?', async (req, res) => {
+app.get('(/api/repos/:repositoryId)((/tree/:commitHash)(/)*)?', async (req, res) => {
   let files;
   let endpoint = repositoryPath;
-  if (req.params.path) { 
-    endpoint = path.join(endpoint,  ...req.query.dir)
+  //console.log(req.params);
+  if (req.params[4]) { 
+    const query = req.params[4];
+    //console.log(query);
+    endpoint = path.join(endpoint, query);
+    console.log(endpoint);
   }
   
   let branch = 'master';
@@ -112,8 +119,6 @@ app.get('(/api/repos/:repositoryId)(/tree/:commitHash/:path)?', async (req, res)
   }
   
   if (hash) branch = hash;
-
-  console.log(endpoint);
 
   Promise.all(files.map((file) => {
     let type;
@@ -151,10 +156,22 @@ app.get('(/api/repos/:repositoryId)(/tree/:commitHash)?(/:path)?', (req, res) =>
 
 });
 */
-app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile', (req, res) => {
-  exec(`git show ${hash}:${fileName}`, { cwd: repositoryPath }, (err, out) => {
-    res.end(out);
-  });
+
+
+app.get('(/api/repos/:repositoryId/blob/:commitHash)(/)*', async (req, res) => {
+  let data;
+  const fileName = req.params[2];    
+  try {
+    data = await new Promise((resolve, reject) => {
+      exec(`git show ${hash}:${fileName}`, { cwd: repositoryPath }, (err, out) => {
+        resolve(out);
+      })
+    })     
+  } catch (err) {
+    data = { error: err.message };
+  }
+
+  res.end(data);
 });
 
 app.get('/api/repos/:repositoryId/count/:commitHash', (req, res) => {

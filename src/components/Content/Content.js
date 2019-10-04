@@ -1,30 +1,23 @@
 import React, { Component } from 'react';
+import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import FilesContent from './../FilesContent';
 import BranchesContent from './../BranchesContent';
 import FileContent from './../FileContent';
 import { fetchData } from './../../actions';
 
 class Content extends Component {
-  componentDidMount() {
-    this.props.fetchData('http://localhost:8000/api/repos/my-repository', 'files');
-  }
-
-  showContent() {
-    switch (this.props.appContent){  
-      case 'file':
-        return <FileContent />;       
-      case 'branches':
-        return <BranchesContent />;
-      default:
-        return <FilesContent files={this.props.files} />;
-    }
-  }
-  
   render() {  
     return (
       <div class="Main-InnerContent">
-        { this.showContent() }
+        <Switch>          
+          <Route path ="/api/repos" component={FilesContent} />
+          <Route path ="/api/repos/:repositoryId" component={FilesContent} />
+          <Route path="/branches" component={BranchesContent} />
+          <Route path="(/api/repos/:repositoryId/blob/:commitHash)(/)*" component={FileContent} />
+          <Redirect from='/' to='/api/repos/'/>          
+        </Switch>   
       </div>
     )
   }  
@@ -33,7 +26,8 @@ class Content extends Component {
 const mapStateToProps = (state) => {
   return {
     files: state.files,
-    appContent: state.isShown
+    appContent: state.isShown,
+    selectedRepo: state.selectedRepo
   }
 }
 
@@ -41,7 +35,7 @@ const mapDispatchToProps = {
   fetchData
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Content);
+)(Content));
