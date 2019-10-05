@@ -7,14 +7,14 @@ import ContentMenu from './components/ContentMenu';
 import Content from './components/Content';
 import Footer from './components/Footer';
 
-function App() {
+function App(props) {
   return (
     <main class="Main">
       <Header/>
       <Breadcrumbs/>
       <MainTitle/>
       <ContentMenu/>
-      <Content/>
+      <Content />
       <Footer/>      
     </main>
   );

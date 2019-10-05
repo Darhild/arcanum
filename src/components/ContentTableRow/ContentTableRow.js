@@ -9,31 +9,31 @@ class ContentTableRow extends Component {
   onClick() {      
     let { match, history } = this.props;
     let { name, type } = this.props.file;
-
-    console.log(this.props);
-    console.log(name);
-
-    let query = history.location.pathname;
+    
     let queryType = 'blob'; 
     let dataType = 'file';
 
     if (type === 'folder') {
-      query += '/';
       queryType = 'tree';
-      dataType = 'files'
+      dataType = 'files';
+      name += '/';
     } 
 
-    history.push(`${query}${name}`);
-
-    if (query === '/api/repos/') {
-      this.props.fetchData(`http://localhost:8000/api/repos/${name}`, 'files');
+    if (match.path !== '/api/repos' && history.location.pathname.indexOf('tree') === -1 && history.location.pathname.indexOf('blob') === -1) {
+      const repo = match.params.repositoryId;    
+      console.log(`http://localhost:8000/api/repos/${repo}/${queryType}/master/${name}`);  
+      this.props.fetchData(`http://localhost:8000/api/repos/${repo}/${queryType}/master/${name}`, `${dataType}`);
+      history.push(`${queryType}/master/${name}`);
     }
 
-    else {
-      let repo = match.params.repositoryId;
-      console.log(`http://localhost:8000/api/repos/${repo}/${queryType}/master/${query}${name}`);
+    else {      
+      history.push(name);
+      let pathname = history.location.pathname;  
+      if (type === 'file') pathname = history.location.pathname.replace('tree', 'blob'); 
+      console.log(`http://localhost:8000${pathname}`);
 
-      this.props.fetchData(`http://localhost:8000/api/repos/${repo}/${queryType}/master/${query}${name}`, `${dataType}`);
+      this.props.fetchData(`http://localhost:8000${pathname}`, `${dataType}`);           
+
     }
   }
 

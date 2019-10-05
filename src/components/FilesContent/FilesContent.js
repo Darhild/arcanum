@@ -7,7 +7,7 @@ import './FilesContent.css';
 
 class FilesContent extends Component {
   componentDidMount() {
-    if(!this.props.files.length) this.props.fetchData(`http://localhost:8000/api/repos`, 'files');
+    this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`, 'files');
   }
 
   render() { 

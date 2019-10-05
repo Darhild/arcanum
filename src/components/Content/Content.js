@@ -11,11 +11,11 @@ class Content extends Component {
   render() {  
     return (
       <div class="Main-InnerContent">
-        <Switch>          
-          <Route path ="/api/repos" component={FilesContent} />
-          <Route path ="/api/repos/:repositoryId" component={FilesContent} />
+        <Switch>
+          <Route path ="/api/repos/:repositoryId" component={FilesContent} />          
+          <Route path ="/api/repos" component={FilesContent} />          
           <Route path="/branches" component={BranchesContent} />
-          <Route path="(/api/repos/:repositoryId/blob/:commitHash)(/)*" component={FileContent} />
+          <Route path="/api/repos/:repositoryId/blob" component={FileContent} />
           <Redirect from='/' to='/api/repos/'/>          
         </Switch>   
       </div>
