@@ -59,14 +59,7 @@
 
   &-Col_committer {
       order: 4;
-
-      &:before {
-          content: "by\00a0"
-      }
-
-      &:after {
-          content: ",\00a0"
-      }
+      margin-right: 8px;
   }    
 
   &-Col_last {

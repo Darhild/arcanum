@@ -7,23 +7,25 @@ import './FilesContent.css';
 
 class FilesContent extends Component {
   componentDidMount() {
-    this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`, 'files');
+    this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`);
   }
 
   render() { 
     return (
-      <div class="ContentTable">
-        <div class="ContentTable-Row ContentTable-Head">
-          <div class="ContentTable-Col">Name</div>
-          <div class="ContentTable-Col">Last commit</div>
-          <div class="ContentTable-Col">Commit message</div>
-          <div class="ContentTable-Col">Committer</div>
-          <div class="ContentTable-Col ContentTable-Col_last">Updates</div>
+      <div class="Main-InnerContent">
+        <div class="ContentTable">
+          <div class="ContentTable-Row ContentTable-Head">
+            <div class="ContentTable-Col">Name</div>
+            <div class="ContentTable-Col">Last commit</div>
+            <div class="ContentTable-Col">Commit message</div>
+            <div class="ContentTable-Col">Committer</div>
+            <div class="ContentTable-Col ContentTable-Col_last">Updates</div>
+          </div>
+          { this.props.content 
+            ? this.props.content.map(file => <ContentTableRow file={file} />) 
+            : null 
+          }
         </div>
-        { this.props.files 
-          ? this.props.files.map(file => <ContentTableRow file={file} />) 
-          : null 
-        }
       </div>
     )
   }
@@ -31,8 +33,7 @@ class FilesContent extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    files: state.files,
-    appContent: state.isShown
+    content: state.content
   }
 }
 

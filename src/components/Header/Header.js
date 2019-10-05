@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Icon from './../Icon';
 import MainMenu from './../MainMenu';
 import Search from './../Search';
@@ -9,7 +10,9 @@ export default class Header extends Component {
     return (
       <div class="MainHeader">
         <div class="MainHeader-Wrapper">
-          <Icon type="logo" classes={['MainHeader-Logo']} />
+          <Link to="/api/repos">
+            <Icon type="logo" classes={['MainHeader-Logo']} />
+          </Link>
           <MainMenu />
           <Search classes={['MainHeader-Search']} />
         </div>

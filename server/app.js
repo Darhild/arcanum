@@ -120,12 +120,11 @@ app.get('(/api/repos/:repositoryId)((/tree/:commitHash)(/)*)?', async (req, res)
   
   if (hash) branch = hash;
 
-  Promise.all(files.map((file) => {
-    let type;
-    if (path.extname(file)) type = 'file';
-    else type = 'folder';
-    const data = [`name - ${file}, type - ${type},`];    
+  Promise.all(files.map((file) => {     
     return new Promise((resolve) => {
+      let type = 'folder';
+      if (path.extname(file)) type = 'file';
+      const data = [`name - ${file}, type - ${type},`];   
       exec(`git log --pretty=format:" lastCommit - %h, message - %s, committer - %an, commitDate - %cr" -1 ${file}`, { cwd: endpoint }, (err, out) => {
         data.push(out);
         resolve(data.toString());
@@ -159,8 +158,13 @@ app.get('(/api/repos/:repositoryId)(/tree/:commitHash)?(/:path)?', (req, res) =>
 
 
 app.get('(/api/repos/:repositoryId/blob/:commitHash)(/)*', async (req, res) => {
-  let data;
-  const fileName = req.params[2];    
+  const fileName = req.params[2];  
+  let data;  
+  let result = {
+    fileName: fileName,
+    fileContent: []
+  };  
+
   try {
     data = await new Promise((resolve, reject) => {
       exec(`git show ${hash}:${fileName}`, { cwd: repositoryPath }, (err, out) => {
@@ -168,10 +172,12 @@ app.get('(/api/repos/:repositoryId/blob/:commitHash)(/)*', async (req, res) => {
       })
     })     
   } catch (err) {
-    data = { error: err.message };
+    res.json({ error: err.message });
   }
 
-  res.end(data);
+  result.fileContent = formatCodeForFileContent(data);
+
+  res.json(result);
 });
 
 app.get('/api/repos/:repositoryId/count/:commitHash', (req, res) => {
@@ -223,15 +229,31 @@ function formatCode(string) {
   return string.trim().split('\n');
 }
 
+function formatCodeForFileContent(string) {
+  const arr = string.trim().split('\n');
+  const result = [];    
+
+  for(let i = 1; i <= arr.length; i++) {
+    const obj = {};
+    obj.id = i;
+    obj.str = arr[i];
+    result.push(obj)
+  }
+
+  return result;
+}
+
 function formatCodeForFileTable(string) {
   const arr = string.trim().split(',');
   const obj = {};
+
   arr.forEach((info) => {    
     const idx = info.indexOf('-');
     const key = info.slice(0, idx).trim();
     const value = info.slice(idx + 1).trim();
     obj[key] = value;
   });
+
   return obj;
 }
 

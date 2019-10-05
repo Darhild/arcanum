@@ -126,6 +126,42 @@ body {
   }  
 }
 
+.Link {
+  cursor: pointer;
+
+  &_state_active {
+      font-weight: bold;
+  }
+
+  &_color_accent {
+      color: var(--color-accent);
+  }
+
+  &_color_accent:hover {
+      color: var(--color-primary);
+  }
+
+  &_color_accent_dark {
+      color: var(--color-accent-secondary);
+  }    
+
+  &_user {
+      display: inline-block;
+  }
+
+  &_user:first-letter {
+      color: var(--color-primary);
+  }    
+  
+  &_committer:before {
+      content: "by\00a0"        
+  }
+
+  &_committer:after {
+      content: ",\00a0"        
+  }
+}
+
 .Overlay {        
   position: fixed;
   top: 0;

@@ -14,6 +14,7 @@ export const initialState = {
       value: 'devtools-team-repository'
     }
   ],
+  file: [],
   files: [],
   isShown: 'files',
   selectedRepo: {
@@ -31,9 +32,7 @@ export function reducer(state = initialState, action) {
       return { ...state, selectedRepo: action.name }
 
     case 'ITEMS_FETCH_DATA_SUCCESS':
-      const newProp = {};
-      newProp[action.dataType] = action.items;
-      return { ...state, files: action.items}
+      return { ...state, content: action.content}
 
     default: 
       return state;

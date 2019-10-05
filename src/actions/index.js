@@ -3,11 +3,11 @@ export const showContent = (data) => ({
   isShown: data
 })
 
-export const fetchData = (url, dataType) => {
+export const fetchData = (url) => {
   return (dispatch) => {
     fetch(url)
     .then(res => res.json())
-    .then(items => dispatch(itemsFetchDataSuccess(items, dataType)))
+    .then(content => dispatch(itemsFetchDataSuccess(content)))
   }  
 }
 
@@ -18,11 +18,9 @@ export const selectRepo = (name) => {
   }; 
 }
 
-function itemsFetchDataSuccess(items, dataType) {
+function itemsFetchDataSuccess(content) {
   return {
     type: 'ITEMS_FETCH_DATA_SUCCESS',
-    dataType,
-    items: items
-  };
+    content
+  }
 }
-
