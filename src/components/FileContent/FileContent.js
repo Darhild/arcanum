@@ -16,33 +16,35 @@ class FileContent extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log(`http://localhost:8000${this.props.history.location.pathname}`);
+  componentDidMount() { 
     this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`);
   }
 
-  componentDidUpdate() {
-    console.log(`http://localhost:8000${this.props.history.location.pathname}`);
-    this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`);
+  componentDidUpdate(prevProps) {    
+    if (this.props.content !== prevProps.content) this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`);
   }
 
   render() {
-    return (
-      <div class="Main-InnerContent Main-InnerContent_p_t Main-InnerContent_width_full">
-        <div class="FileContent">
-          <div class="FileContent-Head">
-            <IconPlus type='file' iconClasses={['']} text={this.props.content.fileName} />
-            <div class="FileContent-Size">({this.state.size} bytes)</div>
-            <div class="FileContent-Download">
-              <Icon type="download" classes={['']} />
+    if (this.props.content) {
+      return (
+        <div className="Main-InnerContent Main-InnerContent_p_t Main-InnerContent_width_full">
+          <div className="FileContent">
+            <div className="FileContent-Head">
+              <IconPlus type='file' iconClasses={['']} text={this.props.content.fileName} />
+              <div className="FileContent-Size">({this.state.size} bytes)</div>
+              <div className="FileContent-Download">
+                <Icon type="download" classes={['']} />
+              </div>
             </div>
+            <div className="FileContent-Content">
+              { this.props.content.fileContent ? this.props.content.fileContent.map(string => <FileContentRow key={string.id} id={string.id} content={string.str} />)  : null }
+            </div>   
           </div>
-          <div class="FileContent-Content">
-            { this.props.content.fileContent ? this.props.content.fileContent.map(string => <FileContentRow key={string.id} id={string.id} content={string.str} />)  : null }
-          </div>   
-        </div>
-      </div>   
-    )
+        </div>   
+      )
+    }
+
+    return null;    
   }
 }
 

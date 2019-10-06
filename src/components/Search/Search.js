@@ -8,9 +8,9 @@ export default class Search extends Component {
   render() {
     return (
       <div className={cnSearch(null, [...this.props.classes])}>
-        <form class="Search-Form"> 
-          <input class="Search-Input MainHeader-SearchInput" type="text" />
-          <input class="Btn Search-Submit" type="submit" value="" />
+        <form className="Search-Form"> 
+          <input className="Search-Input MainHeader-SearchInput" type="text" />
+          <input className="Btn Search-Submit" type="submit" value="" />
         </form>
       </div>
     )

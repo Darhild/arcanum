@@ -14,8 +14,7 @@ export const initialState = {
       value: 'devtools-team-repository'
     }
   ],
-  file: [],
-  files: [],
+  content: [],
   isShown: 'files',
   selectedRepo: {
     text: 'My repository',

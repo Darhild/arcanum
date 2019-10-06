@@ -20,7 +20,6 @@ class MainMenu extends Component {
       innerMenuIsOpen: false
     }))
 
-    this.props.history.push(repo.value);
     this.props.selectRepo(repo);
   }
 
@@ -32,7 +31,7 @@ class MainMenu extends Component {
 
   render() {
     return (
-      <div class="MainMenu MainHeader-Menu"> 
+      <div className="MainMenu MainHeader-Menu"> 
         <div 
           className=
           { this.state.innerMenuIsOpen 

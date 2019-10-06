@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './ContentMenu.css';
 import ContentMenuItem from './../ContentMenuItem';
 
-export default class ContentMenu extends Component {
-  render() {
-    return (
-      <div class="ContentMenu">
-        <div class="ContentMenu-Wrapper">
-          <ContentMenuItem data="files" />
-          <ContentMenuItem data="branches" />          
-        </div>
+const ContentMenu = ({ items }) => {
+  return (
+    <div className="ContentMenu">
+      <div className="ContentMenu-Wrapper">
+        {
+          items.map(item => (
+          <ContentMenuItem item={item} key={item} />
+          ))
+        }  
       </div>
-    )
-  }    
+    </div>
+  )    
 }
+
+export default ContentMenu;

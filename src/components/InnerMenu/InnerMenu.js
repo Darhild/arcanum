@@ -13,8 +13,8 @@ export default class InnerMenu extends Component {
   render() {
     return (
       <div className={cnIcon(null, [...this.props.classes])}>
-        <div class="InnerMenu-Wrapper">
-          <div class="InnerMenu-Content">
+        <div className="InnerMenu-Wrapper">
+          <div className="InnerMenu-Content">
             {
               this.props.data.map(item => <InnerMenuItem item={ item } updateData={ this.updateData }/>)
             }            

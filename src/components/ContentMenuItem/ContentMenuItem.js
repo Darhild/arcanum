@@ -1,19 +1,12 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux'
-import './ContentMenuItem.css';
 import { showContent } from './../../actions';
 
-const ContentMenuItem = ({ data, appContent, history }) => {
-
-  return <div className={ data === appContent ? 'ContentMenu-Item ContentMenu-Item_state_active' : 'ContentMenu-Item' }
-          onClick={() => {
-            history.push(`/${data}`);
-            showContent(data);
-          }} 
-         >
-          { data }
-        </div>    
+const ContentMenuItem = ({ item, appContent, showContent }) => {
+  return  <div className={ item === appContent ? 'ContentMenu-Item ContentMenu-Item_state_active' : 'ContentMenu-Item' }
+            onClick={ () => { showContent(item) } }>
+            { item }
+          </div>    
 }    
 
 const mapStateToProps = (state) => {
@@ -29,4 +22,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ContentMenuItem));
+)(ContentMenuItem);

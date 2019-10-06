@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import IconPlus from './../IconPlus';
 
-export default class BranchesRow extends Component {
-  render() {
-    const { branch } = this.props;
-
-    return (
-      <div class="ContentTable-Row">
-        <IconPlus classes={['ContentTable-Col', 'ContentTable-Col_name']} type="branch" iconClasses={['']} text={branch.name ? branch.name : ''} />
-        <div class="ContentTable-Col ContentTable-Col_last"> <span class="Link Link_color_accent">{branch.hash ? branch.hash : ''}</span></div>
+const BranchesRow = ({ branch }) => {
+  return (
+    <div className='ContentTable-Row'>
+      <div className='ContentTable-Col ContentTable-Col_name'>
+        <IconPlus type="branch" iconClasses={['']} text={branch.name ? branch.name : ''} />          
       </div>
-    )
-  }
+      <div className='ContentTable-Col ContentTable-Col_last'> <span className='Link Link_color_accent'>{branch.hash ? branch.hash : ''}</span></div>
+    </div>
+  )
 }
+
+export default BranchesRow;

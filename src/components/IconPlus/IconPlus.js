@@ -1,23 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { cn } from '@bem-react/classname';
 import './IconPlus.css';
 import Icon from './../Icon';
 
 const cnIcon = cn('IconPlus');
 
-export default class IconPlus extends Component {
-  render() {
-    return (
-      <div className={cnIcon(null, this.props.classes)}>
-        <div class="IconPlus-Icon"> 
-        {
-          this.props.type
-          ? <Icon type={this.props.type} classes={this.props.iconClasses} />
-          : null
-        }          
-        </div>
-        <div class="IconPlus-Text FileContent-Name">{this.props.text}</div>
-      </div>      
-    )
-  }
+const IconPlus = ({ classes, iconClasses, type, text }) => {
+  return (
+    <div className={cnIcon(null, classes)} >
+      <div className="IconPlus-Icon"> 
+      {
+        type
+        ? <Icon type={type} classes={iconClasses} />
+        : null
+      }          
+      </div>
+      <div className="IconPlus-Text FileContent-Name">{text}</div>
+    </div>      
+  )
 }
+
+export default IconPlus;

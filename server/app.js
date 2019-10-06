@@ -4,7 +4,6 @@ const os = require('os');
 const path = require('path');
 const { exec, execSync, fork } = require('child_process');
 const { promisify } = require('util');
-
 const readdir = promisify(fs.readdir);
 const checkAccess = promisify(fs.access);
 const dirName = process.argv[2];
@@ -31,7 +30,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(/\/api\/repos\/.*/, checkIfREpositoryExists);
+app.use('/api/repos/:repositoryId', async (req, res, next) => {  
+  await checkAccess(repositoryPath)    
+    .catch(() => sendError404(res, 'Repository', repositoryId));
+
+  next();
+}) 
 
 app.get('/api/repos', async (req, res) => {
   let repos;
@@ -42,6 +46,7 @@ app.get('/api/repos', async (req, res) => {
   }
 
   let data = [];
+  
   repos.forEach(repo => {
     data.push({
       name: repo,
@@ -121,14 +126,15 @@ app.get('(/api/repos/:repositoryId)((/tree/:commitHash)(/)*)?', async (req, res)
   if (hash) branch = hash;
 
   Promise.all(files.map((file) => {     
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       let type = 'folder';
       if (path.extname(file)) type = 'file';
       const data = [`name - ${file}, type - ${type},`];   
       exec(`git log --pretty=format:" lastCommit - %h, message - %s, committer - %an, commitDate - %cr" -1 ${file}`, { cwd: endpoint }, (err, out) => {
+        if(err) reject(err);
         data.push(out);
         resolve(data.toString());
-      });
+      });      
     })
   }))
     .then((responses) => {
@@ -139,6 +145,7 @@ app.get('(/api/repos/:repositoryId)((/tree/:commitHash)(/)*)?', async (req, res)
       return data;
     })
     .then(result => res.json(result))
+    .catch(err => res.json({error: err.message}))
 });
 
 /*
@@ -155,7 +162,6 @@ app.get('(/api/repos/:repositoryId)(/tree/:commitHash)?(/:path)?', (req, res) =>
 
 });
 */
-
 
 app.get('(/api/repos/:repositoryId/blob/:commitHash)(/)*', async (req, res) => {
   const fileName = req.params[2];  
@@ -263,14 +269,6 @@ function sendError404(res, paramType, paramValue) {
   res.send({ error: `${paramType} ${paramValue} does not exist.` });
 }
 
-async function checkIfREpositoryExists(err, req, res, next) {
-  console.log('checked');
-  const isAccessible = await checkAccess(repositoryPath)
-    .then(() => true)
-    .catch(() => false);
-
-  if (!isAccessible) sendError404(res, 'Repository', repositoryId);
-  next();
-}
-
 app.listen(8000);
+
+module.exports = app;

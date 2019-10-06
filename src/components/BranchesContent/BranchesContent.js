@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './BranchesContent.css';
-import IconPlus from './../IconPlus';
-import Icon from './../Icon';
 import BranchesRow from './../BranchesRow';
 
 export default class BranchesContent extends Component {
@@ -24,15 +22,17 @@ export default class BranchesContent extends Component {
 
   render() { 
     return (
-      <div class="ContentTable">
-        <div class="ContentTable-Row ContentTable-Head">
-          <div class="ContentTable-Col">Name</div>
-          <div class="ContentTable-Col ContentTable-Col_last">Commit Hash</div>
+      <div className="Main-InnerContent">
+        <div className="ContentTable">
+          <div className="ContentTable-Row ContentTable-Head">
+            <div className="ContentTable-Col">Name</div>
+            <div className="ContentTable-Col ContentTable-Col_last">Commit Hash</div>
+          </div>
+          { this.state.branches 
+            ? this.state.branches.map(branch => <BranchesRow branch={ branch } key={ branch.name } />) 
+            : null 
+          }
         </div>
-        { this.state.branches 
-          ? this.state.branches.map(branch => <BranchesRow branch={branch} />) 
-          : null 
-        }
       </div>
     )
   }

@@ -67,6 +67,7 @@
       width: 31px;
       color: var(--color-text-faded);
       text-align: right;
+      user-select: none;
   }
 
   &-RowContent {
