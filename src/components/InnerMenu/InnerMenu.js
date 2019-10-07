@@ -16,7 +16,7 @@ export default class InnerMenu extends Component {
         <div className="InnerMenu-Wrapper">
           <div className="InnerMenu-Content">
             {
-              this.props.data.map(item => <InnerMenuItem item={ item } updateData={ this.updateData }/>)
+              this.props.data.map(item => <InnerMenuItem item={ item } key={ item.value } updateData={ this.updateData }/>)
             }            
           </div>
         </div>

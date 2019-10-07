@@ -73,7 +73,7 @@
   "scripts": {
     "start": "npm-run-all --parallel start-server start-client",
     "build": "node scripts/build.js",
-    "test": "mocha tests/**/*.js --timeout 15000",
+    "test": "mocha tests/**/*.js",
     "start-client": "node scripts/start.js",
     "start-server": "node server/app.js server/repos"
   },

@@ -1,20 +1,9 @@
-const app = require('./../server/app');
-const fs = require('fs');
+const app = require('../server/app').app;
+const formatCodeForFileTable = require('../server/app').formatCodeForFileTable;
 const chai = require('chai');
 const assert = chai.assert;
 const should = chai.should();
 const request = require('supertest');
-/*
-describe('server', () => {
-  describe('.checkIfREpositoryExists(err, req, res, next)', () => {
-    it('should give the list of directories', () => {
-      const result1 = server.checkIfREpositoryExists();
-      const result2 = server.checkIfREpositoryExists();
-      assert.equal(result1, true);
-      assert.equal(result2, false);
-    })
-  })   
-})*/
 
 describe('requests', () => {
   describe('Response JSON', () => {
@@ -52,3 +41,26 @@ describe('requests', () => {
     })
   })    
 })
+
+describe('formatting', () => {
+  describe('.formatCodeForFileTable(string)', () => {
+    it('should format string and return with object', () => {
+      const string = "name - 1, type - folder, lastCommit - 888777, message - message1, committer - a, commitDate - 5 weeks ago";
+
+      const result = formatCodeForFileTable(string);
+
+      const expected = { name: '1',
+          type: 'folder',
+          lastCommit: '888777',
+          message: 'message1',
+          committer: 'a',
+          commitDate: '5 weeks ago' } ;
+
+      console.log(result);
+      console.log(expected);
+           
+      assert.equal(result, expected);
+    })
+  })   
+})
+

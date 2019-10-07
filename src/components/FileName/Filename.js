@@ -9,7 +9,6 @@ const cnFileName = cn('FileName');
 
 class FileName extends Component {
   onClick() {     
-    console.log(this.props); 
     let { match, history } = this.props;
     let { name, type } = this.props.file;
     
@@ -22,7 +21,6 @@ class FileName extends Component {
 
     if (match.path !== '/api/repos/' && history.location.pathname.indexOf('tree') === -1 && history.location.pathname.indexOf('blob') === -1) {
       const repo = match.params.repositoryId;    
-      //console.log(`http://localhost:8000/api/repos/${repo}/${queryType}/master/${name}`);  
       this.props.fetchData(`http://localhost:8000/api/repos/${repo}/${queryType}/master/${name}`);
       history.push(`${queryType}/master/${name}`);
     }
@@ -34,11 +32,8 @@ class FileName extends Component {
         pathname = history.location.pathname.replace('tree', 'blob');
         history.replace(pathname);
       }
-     //console.log(`http://localhost:8000${pathname}`);
 
       this.props.fetchData(`http://localhost:8000${pathname}`);
-
-      //console.log(history);
     }
   }
 
