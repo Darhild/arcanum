@@ -129,7 +129,7 @@ app.get('(/api/repos/:repositoryId)((/tree/:commitHash)(/)*)?', async (req, res)
     return new Promise((resolve, reject) => {
       let type = 'folder';
       if (path.extname(file)) type = 'file';
-      const data = [`name - ${file}, type - ${type}`];   
+      const data = [`name - ${file}, type - ${type},`];   
       exec(`git log --pretty=format:" lastCommit - %h, message - %s, committer - %an, commitDate - %cr" -1 ${file}`, { cwd: endpoint }, (err, out) => {
         if(err) reject(err);
         data.push(out);
@@ -271,7 +271,4 @@ function sendError404(res, paramType, paramValue) {
 
 app.listen(8000);
 
-module.exports = {
-  app: app,
-  formatCodeForFileTable: formatCodeForFileTable
-} 
+module.exports = app;
