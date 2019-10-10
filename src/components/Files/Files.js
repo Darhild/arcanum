@@ -10,13 +10,13 @@ import Folders from './../Folders';
 
 class Files extends Component {
   componentDidMount() {
-    this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`);
+    this.props.fetchData(`http://localhost:8080${this.props.history.location.pathname}`);
   }
 
   componentDidUpdate(prevProps) { 
     if (shallowEqualArrays(this.props.content, prevProps.content)) {
   //    console.log(shallowEqualArrays(this.props.content, prevProps.content));
-      this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`)
+      this.props.fetchData(`http://localhost:8080${this.props.history.location.pathname}`)
     };
   }
 

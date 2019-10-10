@@ -78,7 +78,7 @@
   "scripts": {
     "start": "npm-run-all --parallel start-server start-client",
     "build": "node scripts/build.js",
-    "test": "mocha tests/**/*.js",
+    "test": "mocha tests/server/**/*.js",
     "start-client": "node scripts/start.js",
     "start-server": "node server/app.js server/repos"
   },
@@ -99,6 +99,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "hermione": "^2.12.6",
+    "html-reporter": "^5.0.0",
     "mocha": "^6.2.1",
     "node-gyp": "^6.0.0",
     "shallow-equal": "^1.2.0",

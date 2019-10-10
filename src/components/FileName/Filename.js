@@ -21,7 +21,7 @@ class FileName extends Component {
 
     if (match.path !== '/api/repos/' && history.location.pathname.indexOf('tree') === -1 && history.location.pathname.indexOf('blob') === -1) {
       const repo = match.params.repositoryId;    
-      this.props.fetchData(`http://localhost:8000/api/repos/${repo}/${queryType}/master/${name}`);
+      this.props.fetchData(`http://localhost:8080/api/repos/${repo}/${queryType}/master/${name}`);
       history.push(`${queryType}/master/${name}`);
     }
 
@@ -33,7 +33,7 @@ class FileName extends Component {
         history.replace(pathname);
       }
 
-      this.props.fetchData(`http://localhost:8000${pathname}`);
+      this.props.fetchData(`http://localhost:8080${pathname}`);
     }
   }
 

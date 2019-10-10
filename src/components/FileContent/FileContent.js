@@ -17,11 +17,11 @@ class FileContent extends Component {
   }
 
   componentDidMount() { 
-    this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`);
+    this.props.fetchData(`http://localhost:8080${this.props.history.location.pathname}`);
   }
 
   componentDidUpdate(prevProps) {    
-    if (this.props.content !== prevProps.content) this.props.fetchData(`http://localhost:8000${this.props.history.location.pathname}`);
+    if (this.props.content !== prevProps.content) this.props.fetchData(`http://localhost:8080${this.props.history.location.pathname}`);
   }
 
   render() {
