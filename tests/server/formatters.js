@@ -4,7 +4,7 @@ const assert = chai.assert;
 
 describe('formatting', () => {
   describe('formatCodeForReposList', () => {
-    it('should format arr and return with array of objects', () => {
+    it('should format arr and return array of objects', () => {
       const arr = [ 'dir1', 'dir2', 'dir3'];
 
       const result = formatCodeForReposList(arr);
@@ -30,7 +30,7 @@ describe('formatting', () => {
   })
 
   describe('formatCodeForCommitsContent', () => {
-    it('should format string and return with array of objects', () => {
+    it('should format string and return array of objects', () => {
       const string = "aaabbbb Tue Sep 10 11:00:00 2019 +0300\ncccdddd Tue Oct 08 08:00:00 2019 +0300\n";
 
       const result = formatCodeForCommitsContent(string);
@@ -49,7 +49,7 @@ describe('formatting', () => {
   })  
 
   describe('formatCodeForFileTable', () => {
-    it('should format string and return with array of objects', () => {
+    it('should format string and return array of objects', () => {
       const string = "name - 1, type - folder, lastCommit - 888777, message - message1, committer - a, commitDate - 5 weeks ago\nname - 2.php, type - file, lastCommit - 888777, message - message2, committer - b, commitDate - 3 weeks ago";
 
       const result = formatCodeForFileTable(string);

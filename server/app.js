@@ -1,13 +1,14 @@
 const express = require('express');
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
-const { formatCodeForReposList, formatCodeForCommitsContent, formatCodeForFileContent, formatCodeForFileTable } = require('./formatters');
-const { gitHelper } = require('./gitHandlers');
 const { promisify } = require('util');
 const checkAccess = promisify(fs.access);
 const dirName = process.argv[2];
+const os = require('os');
 const userOs = os.type();
+const { showRepos, showDiff, showCommits, showFilesInfo, showFileContent } = require('./contentHandlers');
+const { gitHelper } = require('./gitHelper');
+
 let repositoryId; let repositoryPath; 
 let hash = 'master';
 
@@ -44,15 +45,15 @@ app.use('/api/repos/:repositoryId', async (req, res, next) => {
 }) 
 
 app.get('/api/repos', async (req, res) => {
-  res.json(await showRepos());
+  res.json(await showRepos(dirName));
 });
 
 app.get('(/api/repos/:repositoryId/commits/:commitHash)(/diff)?', async (req, res) => {
   if (/diff$/.test(req.path)) {
-    res.json(await showDiff());
+    res.json(await showDiff(repositoryPath, hash));
   }
   else {
-    res.json(await showCommits(req.params.showFrom, req.params.showMax));  
+    res.json(await showCommits(repositoryPath, hash, req.query.showFrom, req.query.showMax));  
   }
 });
 
@@ -63,14 +64,14 @@ app.get('(/api/repos/:repositoryId)((/tree/:commitHash)(/)*)?', async (req, res)
     endpoint = path.join(endpoint, query);
   }
 
-  res.json(await showFilesInfo(endpoint));
+  res.json(await showFilesInfo(endpoint, hash));
 });
 
 app.get('(/api/repos/:repositoryId/blob/:commitHash)(/)*', async (req, res) => {
   const fileName = req.params[2];  
   let result = {
     fileName: fileName,
-    fileContent: await showFileContent(fileName)
+    fileContent: await showFileContent(repositoryPath, hash, fileName)
   };  
 
   res.json(result);
@@ -79,123 +80,6 @@ app.get('(/api/repos/:repositoryId/blob/:commitHash)(/)*', async (req, res) => {
 app.delete('/api/repos/:repositoryId', deleteRepo);
 
 app.post('/api/repos/:repositoryId', cloneRepository);
-
-async function showRepos() {
-  let result;
-
-  try {
-    let repos = await gitHelper.readdir(dirName);
-    result = formatCodeForReposList(repos);  
-  } 
-  catch (err) {
-    result = { error: err.message };    
-  }
-
-  return result;
-}
-
-async function showDiff() {
-  let result;
-
-  try {
-    let diff = await gitHelper.getCommitDiff(repositoryPath, hash);
-    console.log(diff);
-    result = formatCodeForFileTable(diff.stdout);
-  }
-  catch (err) {
-    result = {err: err.message};    
-  }
-
-  return result;
-}
-
-async function getPaginatedCommitsInfo(showFrom, showMax) {
-  let numberOfCommits;
-  let str = "";
-
-  try {        
-    let count = await gitHelper.getCommitsNumber(repositoryPath, hash);
-    numberOfCommits = +count.stdout;
-  }
-  catch(err) {
-    numberOfCommits = 0;
-  }      
-
-  if (showFrom) {
-    if (showFrom < numberOfCommits) str += ` --skip=${showFrom - 1}`;
-  }
-
-  if (showMax) {
-    if (showMax > 0 && showMax <= numberOfCommits) {
-      str += ` -n ${showMax}`;
-    }
-  }
-
-  return str;
-}
-
-async function showCommits(showFrom, showMax) {
-  let paginatedCommits = "";
-
-  if (showFrom || showMax) {
-    paginatedCommits = await getPaginatedCommitsInfo(showFrom, showMax)
-  }
-
-  let result; 
-
-  try {
-    const commits = await gitHelper.getCommits(repositoryPath, hash, paginatedCommits);
-    result = formatCodeForCommitsContent(commits.stdout);
-  }
-  catch(err) {
-    result = { error: err.message }
-  }   
-
-  return result;
-}
-
-async function showFilesInfo(endpoint) {
-  let files;  
-
-  try {
-    files = await gitHelper.readdir(endpoint);
-  } catch (err) {
-    return({ error: err.message });
-  }  
-
-  let result;
-
-  try {
-    const responses = await Promise.all(files.map(async(file) => { 
-      let type = 'folder';
-      if (path.extname(file)) type = 'file';
-      let data = [`name - ${file}, type - ${type},`];  
-      const info = await gitHelper.getGitInfoAboutFile(endpoint, hash, file);   
-      data.push(info.stdout);
-      return data.join(' ');
-    }));
-
-    result = responses.map(response => formatCodeForFileTable(response))
-  }
-  catch(err) {
-    result = {error: err.message}
-  } 
-
-  return result;
-}
-
-async function showFileContent(fileName) { 
-  let data, result; 
-
-  try {
-    data = await gitHelper.getBlob(repositoryPath, hash, fileName);
-    result = formatCodeForFileContent(data.stdout);
-  } catch (err) {
-    result = { error: err.message };
-  }
-
-  return result;
-}
 
 async function deleteRepo(req, res) {
   let command = `rm -r ${repositoryId}`;
@@ -236,14 +120,4 @@ function sendError404(res, paramType, paramValue) {
 
 app.listen(8080);
 
-module.exports = {
-  app: app,
-  showRepos: showRepos,
-  showDiff: showDiff,
-  getPaginatedCommitsInfo: getPaginatedCommitsInfo,
-  showCommits: showCommits,
-  showFilesInfo: showFilesInfo,
-  showFileContent: showFileContent,
-  deleteRepo: deleteRepo,
-  cloneRepository: cloneRepository
-}
+module.exports = app;
