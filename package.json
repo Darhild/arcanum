@@ -67,8 +67,9 @@
     "semver": "6.3.0",
     "style-loader": "1.0.0",
     "terser-webpack-plugin": "1.4.1",
+    "ts-node-dev": "^1.0.0-pre.43",
     "ts-pnp": "1.1.4",
-    "typescript": "^3.6.3",
+    "typescript": "^3.6.4",
     "url-loader": "2.1.0",
     "webpack": "4.40.2",
     "webpack-dev-server": "3.2.1",
@@ -80,7 +81,7 @@
     "build": "node scripts/build.js",
     "test": "mocha tests/server/**/*.js",
     "start-client": "node scripts/start.js",
-    "start-server": "node server/app.js server/repos"
+    "start-server": "node src/server/app.js src/server/repos"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -98,6 +99,7 @@
     ]
   },
   "devDependencies": {
+    "@types/express": "^4.17.1",
     "chai": "^4.2.0",
     "hermione": "^2.12.6",
     "html-reporter": "^5.0.0",
@@ -105,7 +107,8 @@
     "node-gyp": "^6.0.0",
     "shallow-equal": "^1.2.0",
     "sinon": "^7.5.0",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "tslint": "^5.20.0"
   },
   "jest": {
     "roots": [

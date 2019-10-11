@@ -1,5 +1,4 @@
-
-function formatCodeForReposList(arr) {
+export function formatCodeForReposList(arr: Array<string>): Array<object> {
   return arr.map(repo => {
     return {
       name: repo,
@@ -8,7 +7,7 @@ function formatCodeForReposList(arr) {
   })  
 }
 
-function formatCodeForCommitsContent(string) {
+export function formatCodeForCommitsContent(string: string): Array<object> {
   const arr = string.trim().split('\n');
 
   const result = arr.map((commit) => {
@@ -22,7 +21,7 @@ function formatCodeForCommitsContent(string) {
   return result;
 }
 
-function formatCodeForFileTable(string) {
+export function formatCodeForFileTable(string: string): object {
   const arr = string.trim().split(',');
   const obj = {};
 
@@ -36,12 +35,16 @@ function formatCodeForFileTable(string) {
   return obj;
 }
 
-function formatCodeForFileContent(string) {
+export function formatCodeForFileContent(string: string): Array<object> {
   const arr = string.trim().split('\n');
   const result = [];    
 
   for(let i = 1; i <= arr.length; i++) {
-    const obj = {};
+    const obj = { 
+      id: null as number,
+      str: null as string
+    };
+
     obj.id = i;
     obj.str = arr[i - 1];
     result.push(obj)
@@ -50,9 +53,3 @@ function formatCodeForFileContent(string) {
   return result;
 }
 
-module.exports = {
-  formatCodeForReposList: formatCodeForReposList,
-  formatCodeForCommitsContent: formatCodeForCommitsContent,
-  formatCodeForFileContent: formatCodeForFileContent,
-  formatCodeForFileTable: formatCodeForFileTable
-}

@@ -1,4 +1,4 @@
-const test = require('./../../server/contentHandlers');
+const test = require('../../server/contentHandlers');
 const { gitHelper } = require('../../server/gitHelper');
 const chai = require('chai');
 const expect = chai.expect;

@@ -1,18 +1,16 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const { promisify } = require('util');
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import { promisify } from 'util';
 const checkAccess = promisify(fs.access);
 const dirName = process.argv[2];
-const os = require('os');
-const userOs = os.type();
-const { showRepos, showDiff, showCommits, showFilesInfo, showFileContent } = require('./contentHandlers');
-const { gitHelper } = require('./gitHelper');
+import { Message, showRepos, showDiff, showCommits, showFilesInfo, showFileContent, deleteRepo, cloneRepository } from './contentHandlers';
+import { Response } from 'express-serve-static-core';
 
-let repositoryId; let repositoryPath; 
-let hash = 'master';
+let repositoryId: string; let repositoryPath: string; 
+let hash: string = 'master';
 
-const app = express();
+const app: express.Application = express();
 app.use(express.json());
 app.set('json spaces', 4);
 
@@ -58,9 +56,9 @@ app.get('(/api/repos/:repositoryId/commits/:commitHash)(/diff)?', async (req, re
 });
 
 app.get('(/api/repos/:repositoryId)((/tree/:commitHash)(/)*)?', async (req, res) => {
-  let endpoint = repositoryPath;
+  let endpoint: string = repositoryPath;
   if (req.params[4]) { 
-    const query = req.params[4];
+    const query: string = req.params[4];
     endpoint = path.join(endpoint, query);
   }
 
@@ -68,8 +66,8 @@ app.get('(/api/repos/:repositoryId)((/tree/:commitHash)(/)*)?', async (req, res)
 });
 
 app.get('(/api/repos/:repositoryId/blob/:commitHash)(/)*', async (req, res) => {
-  const fileName = req.params[2];  
-  let result = {
+  const fileName: string = req.params[2];  
+  let result: object = {
     fileName: fileName,
     fileContent: await showFileContent(repositoryPath, hash, fileName)
   };  
@@ -77,42 +75,33 @@ app.get('(/api/repos/:repositoryId/blob/:commitHash)(/)*', async (req, res) => {
   res.json(result);
 });
 
-app.delete('/api/repos/:repositoryId', deleteRepo);
+app.delete('/api/repos/:repositoryId', async (req, res) => {
+  const result: Message = await deleteRepo(repositoryId);
 
-app.post('/api/repos/:repositoryId', cloneRepository);
+  if (result.err) {
+    sendError500(res, result.err) 
+  }  
 
-async function deleteRepo(req, res) {
-  let command = `rm -r ${repositoryId}`;
+  res.send(result.message)
+});
 
-  if (userOs === 'Windows_NT') command = `RMDIR /s/q ${repositoryId}`;
+app.post('/api/repos/:repositoryId', async (req, res) => {
+  const result: Message = await cloneRepository(req.body.url, repositoryId, dirName);
 
-  try {
-    await gitHelper.deleteFile(command);
-  }
-  catch(err) {
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.send({ error: err });    
-  }
+  if (result.err) {
+    sendError500(res, result.err)
+  }  
 
-  res.send({ message: `${req.params.repositoryId} was successfully deleted from repos list!` });
+  res.send(result.message)
+});
 
-}
-
-async function cloneRepository(req, res) {
-  try {
-    await gitHelper.cloneRepo(req.body.url, repositoryId, dirName);
-  }
-  catch(err) {
+function sendError500(res: Response, err: string): void {
     res.setHeader('Content-Type', 'application/json');
     res.statusCode = 500;
     res.send({ error: err });
-  }
-
-  res.send({ message: `${repositoryId} was succesfully added to api repos list!` });
 }
 
-function sendError404(res, paramType, paramValue) {
+function sendError404(res: Response, paramType: string, paramValue: string): void {
   res.setHeader('Content-Type', 'application/json');
   res.statusCode = 404;
   res.send({ error: `${paramType} ${paramValue} does not exist.` });
