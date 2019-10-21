@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-//import { shallowEqualArrays } from 'shallow-equal';
+import _ from 'lodash';
 import { fetchData } from '../../actions';
 import { showContent } from '../../actions';
 import ContentMenu from '../ContentMenu';
@@ -30,13 +30,12 @@ class File extends Component<FileProps> {
     this.props.showContent('details');
   }
 
-  componentDidUpdate(prevProps: FileProps) {
-    /*
-    if (shallowEqualArrays(this.props.content, prevProps.content)) {
-      this.props.fetchData(`http://localhost:8080${this.props.history.location.pathname}`)
-    };*/
+  componentDidUpdate(prevProps: FileProps) {      
+    if (!_.isEqual(this.props.content, prevProps.content)) {      
+      console.log(_.isEqual(this.props.content, prevProps.content));
 
-    this.props.fetchData(`http://localhost:8080${this.props.history.location.pathname}`)
+      this.props.fetchData(`http://localhost:8080${this.props.history.location.pathname}`)
+    };
   }
 
   renderContent() {
